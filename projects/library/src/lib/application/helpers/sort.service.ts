@@ -9,19 +9,18 @@ export class SortService implements SortPort {
     products: ProductQuery[],
     sortMethod: SortMethodEnum
   ): ProductQuery[] {
-    if (sortMethod === SortMethodEnum.FEATURED_DESC) {
-      return this._featuredDesc(products);
+    switch (sortMethod) {
+      case SortMethodEnum.FEATURED_DESC:
+        return this._featuredDesc(products);
+      case SortMethodEnum.PRICE_ASC:
+        return this._priceAsc(products);
+      case SortMethodEnum.PROCE_DESC:
+        return this._priceDesc(products);
+      case SortMethodEnum.RATING_DESC:
+        return this._ratingDesc(products);
+      default:
+        return products;
     }
-    if (sortMethod === SortMethodEnum.PRICE_ASC) {
-      return this._priceAsc(products);
-    }
-    if (sortMethod === SortMethodEnum.PROCE_DESC) {
-      return this._priceDesc(products);
-    }
-    if (sortMethod === SortMethodEnum.RATING_DESC) {
-      return this._ratingDesc(products);
-    }
-    return products;
   }
 
   private _priceAsc(products: ProductQuery[]): ProductQuery[] {

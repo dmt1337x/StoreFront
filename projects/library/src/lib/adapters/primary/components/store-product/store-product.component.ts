@@ -20,7 +20,6 @@ import {
 
 @Component({
   selector: 'lib-store-product',
-  styleUrls: ['./store-product.component.scss'],
   templateUrl: './store-product.component.html',
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -76,14 +76,14 @@ export class CategoriesProductsComponent {
     this._getSortMethodQueryPort.getSortMethod();
 
   constructor(
+    private _activatedRoute: ActivatedRoute,
     @Inject(GET_PRODUCT_FROM_SPECIFIC_CATEGORY_QUERY_PORT)
     private _getProductsFromSpecificCategoryQueryPort: GetProductsFromSpecificCategoryQueryPort,
-    private _activatedRoute: ActivatedRoute,
     @Inject(GET_SORT_METHOD_QUERY_PORT)
     private _getSortMethodQueryPort: GetSortMethodQueryPort,
-    @Inject(SORT_PORT) private _sortPort: SortPort,
     @Inject(GET_PRICE_FILTER_QUERY_PORT)
-    private _getPriceFilterQueryPort: GetPriceFilterQueryPort
+    private _getPriceFilterQueryPort: GetPriceFilterQueryPort,
+    @Inject(SORT_PORT) private _sortPort: SortPort
   ) {}
 
   onSortMethodChanged(event: Event) {

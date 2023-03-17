@@ -14,7 +14,7 @@ import {
   GetAllStoresQueryPort,
 } from '../../../../application/ports/primary/query/get-all-stores.query-port';
 import { CategoryQuery } from '../../../../application/ports/primary/query/category.query';
-import { StoreDTO } from '../../../../application/ports/secondary/dto/store.dto';
+import { StoreQuery } from '../../../../application/ports/primary/query/store.query';
 
 @Component({
   selector: 'lib-footer',
@@ -33,7 +33,8 @@ export class FooterComponent {
   categories$: Observable<CategoryQuery[]> =
     this._getAllCategoriesQueryPort.getAllCategories();
 
-  stores$: Observable<StoreDTO[]> = this._getAllStoresQueryPort.getAllStores();
+  stores$: Observable<StoreQuery[]> =
+    this._getAllStoresQueryPort.getAllStores();
 
   links$: Observable<string[]> = of([
     'Company',

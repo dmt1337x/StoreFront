@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { Observable, of, switchMap } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { GetAllCategoriesQueryPort } from '../ports/primary/query/get-all-categories.query-port';
 import { GetAllStoresQueryPort } from '../ports/primary/query/get-all-stores.query-port';
 import { GetProductsFromSpecificCategoryQueryPort } from '../ports/primary/query/get-products-from-specific-category.query-port';

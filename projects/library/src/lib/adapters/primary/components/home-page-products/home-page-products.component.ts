@@ -17,7 +17,6 @@ import { SortMethodEnum } from '../../../../application/helpers/sort-method.enum
 
 @Component({
   selector: 'lib-home-page-products',
-  styleUrls: ['./home-page-products.component.scss'],
   templateUrl: './home-page-products.component.html',
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
