@@ -1,0 +1,45 @@
+<div
+  class="d-flex justify-content-between"
+  *ngIf="productQuantity$ | async as productQuantity"
+>
+  <div class="mb-5">
+    <span class="text-inherit">{{ productQuantity }} Products found</span>
+  </div>
+  <div>
+    <select class="form-select" (change)="onSortMethodChanged($event)">
+      <option *ngFor="let sort of sortMethod$ | async" [value]="sort.value">
+        {{ sort.text }}
+      </option>
+    </select>
+  </div>
+</div>
+<div *ngFor="let item of products$ | async" class="col">
+  <div class="card flex-row p-8 card-product">
+    <div>
+      <img [src]="item.imageUrl" [alt]="item.name" class="rounded-circle" />
+    </div>
+    <div class="ms-6">
+      <div class="small text-muted">
+        <span>{{ categoryName }}</span>
+      </div>
+      <h5 class="mb-1">
+        <a class="text-inherit">{{ item.name }}</a>
+      </h5>
+      <div class="small text-muted mb-10">
+        <small class="text-warning">
+          <i
+            *ngFor="let val of item.rating"
+            class="bi"
+            [ngClass]="{
+              'bi-star-fill': val === 1,
+              'bi-star': val === 0,
+              'bi-star-half': val === 0.5
+            }"
+          ></i>
+        </small>
+        <span> {{ item.ratingValue }}({{ item.ratingCount }})</span>
+      </div>
+      <span> {{ item.price }} $</span>
+    </div>
+  </div>
+</div>
