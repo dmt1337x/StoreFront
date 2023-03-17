@@ -7,6 +7,8 @@ import { GET_STORE_DETAILS_QUERY_PORT } from '../ports/primary/query/get-store-d
 import { GET_PRODUCT_FROM_STORE_QUERY_PORT } from '../ports/primary/query/get-product-from-store.query-port';
 import { GET_CATEGORY_DETAILS_QUERY_PORT } from '../ports/primary/query/get-category-details.query-port';
 import { GET_SORT_METHOD_QUERY_PORT } from '../ports/primary/query/get-sort-method.query-port';
+import { SET_PRICE_FILTER_COMMAND_PORT } from '../ports/primary/command/set-price-filter.command-port';
+import { GET_PRICE_FILTER_QUERY_PORT } from '../ports/primary/query/get-price-filter.query-port';
 
 @NgModule({
   imports: [],
@@ -19,7 +21,9 @@ import { GET_SORT_METHOD_QUERY_PORT } from '../ports/primary/query/get-sort-meth
     { provide: GET_STORE_DETAILS_QUERY_PORT, useExisting: StoreFrontState },
     { provide: GET_PRODUCT_FROM_STORE_QUERY_PORT, useExisting: StoreFrontState },
     { provide: GET_CATEGORY_DETAILS_QUERY_PORT, useExisting: StoreFrontState },
-    { provide: GET_SORT_METHOD_QUERY_PORT, useExisting: StoreFrontState }
+    { provide: GET_SORT_METHOD_QUERY_PORT, useExisting: StoreFrontState },
+    { provide: SET_PRICE_FILTER_COMMAND_PORT, useExisting: StoreFrontState },
+    { provide: GET_PRICE_FILTER_QUERY_PORT, useExisting: StoreFrontState }
   ],
   exports: [],
 })

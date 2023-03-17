@@ -11,5 +11,7 @@ export * from './lib/adapters/primary/components/store-details/store-details.com
 export * from './lib/adapters/primary/components/store-product/store-product.component-module';
 export * from './lib/adapters/primary/components/categories-parent/categories-parent.component-module';
 export * from './lib/adapters/primary/components/sidebar-categories-list/sidebar-categories-list.component-module';
-export * from './lib/adapters/primary/components/category-products/category-products.component-module';
+export * from './lib/adapters/primary/components/categories-products/categories-products.component-module';
 export * from './lib/application/helpers/sort.service-module';
+export * from './lib/adapters/primary/components/sidebar-price-filter/sidebar-price-filter.component-module';
+export * from './lib/adapters/secondary/storages/filters.storage-module';

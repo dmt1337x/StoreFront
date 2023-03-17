@@ -13,7 +13,6 @@ import { CategoryQuery } from '../../../../application/ports/primary/query/categ
 
 @Component({
   selector: 'lib-sidebar-categories-list',
-  styleUrls: ['./sidebar-categories-list.component.scss'],
   templateUrl: './sidebar-categories-list.component.html',
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,

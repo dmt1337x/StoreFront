@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import {
   CategoriesServiceModule,
+  FiltersStorageModule,
   ProductsServiceModule,
   SortServiceModule,
   StoreFrontStateModule,
@@ -30,6 +31,7 @@ import {
     StoresServiceModule,
     StoreFrontStateModule,
     SortServiceModule,
+    FiltersStorageModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

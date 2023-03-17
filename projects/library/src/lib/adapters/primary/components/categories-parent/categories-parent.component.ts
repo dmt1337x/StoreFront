@@ -14,7 +14,6 @@ import {
 
 @Component({
   selector: 'lib-categories-parent',
-  styleUrls: ['./categories-parent.component.scss'],
   templateUrl: './categories-parent.component.html',
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
