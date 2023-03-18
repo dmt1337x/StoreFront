@@ -4,6 +4,7 @@ import { SidebarCategoriesListComponentModule } from '../sidebar-categories-list
 import { CategoriesParentComponent } from './categories-parent.component';
 import { CategoriesProductsComponentModule } from '../categories-products/categories-products.component-module';
 import { SidebarPriceFilterComponentModule } from '../sidebar-price-filter/sidebar-price-filter.component-module';
+import { SidebarStoresFilterComponentModule } from "../sidebar-stores-filter/sidebar-stores-filter.component-module";
 
 @NgModule({
   imports: [
@@ -11,6 +12,7 @@ import { SidebarPriceFilterComponentModule } from '../sidebar-price-filter/sideb
     CommonModule,
     CategoriesProductsComponentModule,
     SidebarPriceFilterComponentModule,
+    SidebarStoresFilterComponentModule
   ],
   declarations: [CategoriesParentComponent],
   providers: [],

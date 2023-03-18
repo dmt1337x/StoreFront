@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { FiltersContext } from '../../../application/ports/secondary/context/filters.context';
-import { BehaviorSubject, Observable, ReplaySubject, take } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { FiltersContextPort } from '../../../application/ports/secondary/context/filters.context-port';
+import { Injectable } from "@angular/core";
+import { FiltersContext } from "../../../application/ports/secondary/context/filters.context";
+import { BehaviorSubject, Observable, take } from "rxjs";
+import { map } from "rxjs/operators";
+import { FiltersContextPort } from "../../../application/ports/secondary/context/filters.context-port";
 
 @Injectable()
 export class FiltersStorage implements FiltersContextPort {
   private _subject$: BehaviorSubject<FiltersContext> =
-    new BehaviorSubject<FiltersContext>({ price: { max: 0, min: 0 } });
+    new BehaviorSubject<FiltersContext>({ price: { max: 0, min: 0 },storesIds:[] });
 
   select(): Observable<FiltersContext> {
     return this._subject$.asObservable();

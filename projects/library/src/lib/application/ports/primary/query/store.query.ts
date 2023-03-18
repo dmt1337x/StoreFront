@@ -4,6 +4,7 @@ export class StoreQuery {
     public readonly logoUrl: string,
     public readonly id: string,
     public readonly distanceInMeters: number,
-    public readonly tagIds: []
+    public readonly tagIds: [],
+    public readonly isSelected: boolean
   ) {}
 }

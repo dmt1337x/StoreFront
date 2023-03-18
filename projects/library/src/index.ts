@@ -15,3 +15,4 @@ export * from './lib/adapters/primary/components/categories-products/categories-
 export * from './lib/application/helpers/sort.service-module';
 export * from './lib/adapters/primary/components/sidebar-price-filter/sidebar-price-filter.component-module';
 export * from './lib/adapters/secondary/storages/filters.storage-module';
+export * from './lib/adapters/primary/components/sidebar-stores-filter/sidebar-stores-filter.component-module';

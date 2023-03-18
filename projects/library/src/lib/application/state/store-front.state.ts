@@ -1,39 +1,33 @@
-import { Inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { GetAllCategoriesQueryPort } from '../ports/primary/query/get-all-categories.query-port';
-import { GetAllStoresQueryPort } from '../ports/primary/query/get-all-stores.query-port';
-import { GetProductsFromSpecificCategoryQueryPort } from '../ports/primary/query/get-products-from-specific-category.query-port';
-import { GetStoreDetailsQueryPort } from '../ports/primary/query/get-store-details.query-port';
-import { GetProductFromStoreQueryPort } from '../ports/primary/query/get-product-from-store.query-port';
-import { GetCategoryDetailsQueryPort } from '../ports/primary/query/get-category-details.query-port';
-import { GetSortMethodQueryPort } from '../ports/primary/query/get-sort-method.query-port';
-import { SetPriceFilterCommandPort } from '../ports/primary/command/set-price-filter.command-port';
-import { GetPriceFilterQueryPort } from '../ports/primary/query/get-price-filter.query-port';
+import { Inject, Injectable } from "@angular/core";
+import { Observable, of } from "rxjs";
+import { map } from "rxjs/operators";
+import { GetAllCategoriesQueryPort } from "../ports/primary/query/get-all-categories.query-port";
+import { GetAllStoresQueryPort } from "../ports/primary/query/get-all-stores.query-port";
 import {
-  CATEGORIES_DTO_PORT,
-  CategoriesDtoPort,
-} from '../ports/secondary/dto/categories.dto-port';
-import {
-  PRODUCTS_DTO_PORT,
-  ProductsDtoPort,
-} from '../ports/secondary/dto/products.dto-port';
-import {
-  STORES_DTO_PORT,
-  StoresDtoPort,
-} from '../ports/secondary/dto/stores.dto-port';
-import {
-  FILTERS_CONTEXT_PORT,
-  FiltersContextPort,
-} from '../ports/secondary/context/filters.context-port';
-import { CategoryQuery } from '../ports/primary/query/category.query';
-import { StoreQuery } from '../ports/primary/query/store.query';
-import { ProductQuery } from '../ports/primary/query/product.query';
-import { SortMethodQuery } from '../ports/primary/query/sort-method.query';
-import { PriceFilterCommand } from '../ports/primary/command/price-filter.command';
-import { PriceFilterQuery } from '../ports/primary/query/price-filter.query';
-import { CategoryType } from '../helpers/types';
-import { SortMethodEnum } from '../helpers/sort-method.enum';
+  GetProductsFromSpecificCategoryQueryPort
+} from "../ports/primary/query/get-products-from-specific-category.query-port";
+import { GetStoreDetailsQueryPort } from "../ports/primary/query/get-store-details.query-port";
+import { GetProductFromStoreQueryPort } from "../ports/primary/query/get-product-from-store.query-port";
+import { GetCategoryDetailsQueryPort } from "../ports/primary/query/get-category-details.query-port";
+import { GetSortMethodQueryPort } from "../ports/primary/query/get-sort-method.query-port";
+import { SetPriceFilterCommandPort } from "../ports/primary/command/set-price-filter.command-port";
+import { GetPriceFilterQueryPort } from "../ports/primary/query/get-price-filter.query-port";
+import { SetFilterByStoresCommandPort } from "../ports/primary/command/set-filter-by-stores.command-port";
+import { GetByStoreFilterQueryPort } from "../ports/primary/query/get-by-store-filter.query-port";
+import { CATEGORIES_DTO_PORT, CategoriesDtoPort } from "../ports/secondary/dto/categories.dto-port";
+import { PRODUCTS_DTO_PORT, ProductsDtoPort } from "../ports/secondary/dto/products.dto-port";
+import { STORES_DTO_PORT, StoresDtoPort } from "../ports/secondary/dto/stores.dto-port";
+import { FILTERS_CONTEXT_PORT, FiltersContextPort } from "../ports/secondary/context/filters.context-port";
+import { CategoryQuery } from "../ports/primary/query/category.query";
+import { StoreQuery } from "../ports/primary/query/store.query";
+import { ProductQuery } from "../ports/primary/query/product.query";
+import { SortMethodQuery } from "../ports/primary/query/sort-method.query";
+import { PriceFilterCommand } from "../ports/primary/command/price-filter.command";
+import { PriceFilterQuery } from "../ports/primary/query/price-filter.query";
+import { FilterByStoresCommand } from "../ports/primary/command/filter-by-stores.command";
+import { ByStoreFilterQuery } from "../ports/primary/query/by-store-filter.query";
+import { CategoryType } from "../helpers/types";
+import { SortMethodEnum } from "../helpers/sort-method.enum";
 
 @Injectable()
 export class StoreFrontState
@@ -46,7 +40,9 @@ export class StoreFrontState
     GetCategoryDetailsQueryPort,
     GetSortMethodQueryPort,
     SetPriceFilterCommandPort,
-    GetPriceFilterQueryPort
+    GetPriceFilterQueryPort,
+    SetFilterByStoresCommandPort,
+    GetByStoreFilterQueryPort
 {
   constructor(
     @Inject(CATEGORIES_DTO_PORT) private _categoriesDtoPort: CategoriesDtoPort,
@@ -81,7 +77,8 @@ export class StoreFrontState
                 store.logoUrl,
                 store.id,
                 store.distanceInMeters,
-                store.tagIds
+                store.tagIds,
+                false
               )
           )
         )
@@ -126,7 +123,8 @@ export class StoreFrontState
               store.logoUrl,
               store.id,
               store.distanceInMeters,
-              store.tagIds
+              store.tagIds,
+              false
             )
         )
       );
@@ -206,5 +204,17 @@ export class StoreFrontState
       }
       return 0;
     });
+  }
+
+  setFilterByStores(command: FilterByStoresCommand): Observable<void> {
+    return this._filtersContextPort.patch({
+      storesIds: command.storesIds.filter((id) => id !== ''),
+    });
+  }
+
+  getByStoreFilter(): Observable<ByStoreFilterQuery> {
+    return this._filtersContextPort
+      .select()
+      .pipe(map((filter) => new ByStoreFilterQuery(filter.storesIds)));
   }
 }
