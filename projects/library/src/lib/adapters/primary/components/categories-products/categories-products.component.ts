@@ -1,28 +1,38 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, ViewEncapsulation } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { BehaviorSubject, combineLatestWith, Observable } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
-import { ProductQuery } from "../../../../application/ports/primary/query/product.query";
-import { SortMethodQuery } from "../../../../application/ports/primary/query/sort-method.query";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  Input,
+  ViewEncapsulation,
+} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject, combineLatestWith, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { ProductQuery } from '../../../../application/ports/primary/query/product.query';
+import { SortMethodQuery } from '../../../../application/ports/primary/query/sort-method.query';
 import {
   GET_PRODUCT_FROM_SPECIFIC_CATEGORY_QUERY_PORT,
-  GetProductsFromSpecificCategoryQueryPort
-} from "../../../../application/ports/primary/query/get-products-from-specific-category.query-port";
+  GetProductsFromSpecificCategoryQueryPort,
+} from '../../../../application/ports/primary/query/get-products-from-specific-category.query-port';
 import {
   GET_SORT_METHOD_QUERY_PORT,
-  GetSortMethodQueryPort
-} from "../../../../application/ports/primary/query/get-sort-method.query-port";
+  GetSortMethodQueryPort,
+} from '../../../../application/ports/primary/query/get-sort-method.query-port';
 import {
   GET_PRICE_FILTER_QUERY_PORT,
-  GetPriceFilterQueryPort
-} from "../../../../application/ports/primary/query/get-price-filter.query-port";
-import { SORT_PORT, SortPort } from "../../../../application/helpers/sort.port";
+  GetPriceFilterQueryPort,
+} from '../../../../application/ports/primary/query/get-price-filter.query-port';
+import { SORT_PORT, SortPort } from '../../../../application/helpers/sort.port';
 import {
   GET_BY_STORE_FILTER_QUERY_PORT,
-  GetByStoreFilterQueryPort
-} from "../../../../application/ports/primary/query/get-by-store-filter.query-port";
-import { SortMethodEnum } from "../../../../application/helpers/sort-method.enum";
-import { eventToEnumMapper } from "../../../../application/helpers/event-to-enum.mapper";
+  GetByStoreFilterQueryPort,
+} from '../../../../application/ports/primary/query/get-by-store-filter.query-port';
+import {
+  GET_BY_RATING_FILTER_QUERY_PORT,
+  GetByRatingFilterQueryPort,
+} from '../../../../application/ports/primary/query/get-by-rating-filter.query-port';
+import { SortMethodEnum } from '../../../../application/helpers/sort-method.enum';
+import { eventToEnumMapper } from '../../../../application/helpers/event-to-enum.mapper';
 
 @Component({
   selector: 'lib-category-products',
@@ -42,6 +52,7 @@ export class CategoriesProductsComponent {
         params['categoryId']
       )
     ),
+
     combineLatestWith(this._sortSubject.asObservable()),
     map(([products, sortSubject]) =>
       this._sortPort.sortMethod(products, sortSubject)
@@ -56,6 +67,16 @@ export class CategoriesProductsComponent {
           )
         : products
     ),
+    combineLatestWith(this._getByRatingFilterQueryPort.getByRatingFilter()),
+    map(([products, byRatingFilter]) =>
+      byRatingFilter.rating > 0
+        ? products.filter(
+            (product) =>
+              product.rating.reduce((acc, cV) => acc + cV) >=
+              byRatingFilter.rating
+          )
+        : products
+    ), //uważam że w zadaniu chodziło o to żeby pokazać produkty z ratingiem większym/równym od zaznaczonego a nie tylko z takim.
     combineLatestWith(this._getPriceFilterQueryPort.getPriceFilter()),
     map(([products, priceFilter]) =>
       products
@@ -93,7 +114,9 @@ export class CategoriesProductsComponent {
     private _getPriceFilterQueryPort: GetPriceFilterQueryPort,
     @Inject(SORT_PORT) private _sortPort: SortPort,
     @Inject(GET_BY_STORE_FILTER_QUERY_PORT)
-    private _getByStoreFilterQueryPort: GetByStoreFilterQueryPort
+    private _getByStoreFilterQueryPort: GetByStoreFilterQueryPort,
+    @Inject(GET_BY_RATING_FILTER_QUERY_PORT)
+    private _getByRatingFilterQueryPort: GetByRatingFilterQueryPort
   ) {}
 
   onSortMethodChanged(event: Event) {

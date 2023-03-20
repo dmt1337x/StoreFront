@@ -1,0 +1,21 @@
+<h3 class="mb-4 mt-10">Rating</h3>
+
+<div *ngFor="let item of rating$ | async" class="form-check">
+    <small class="text-warning">
+      <input
+        class="form-check-input"
+        type="radio"
+        (click)="onRatingSelected(item.value)"
+        name="item"
+      />
+      <i
+        *ngFor="let val of item.rating"
+        class="bi"
+        [ngClass]="{
+          'bi-star-fill': val === 1,
+          'bi-star': val === 0,
+          'bi-star-half': val === 0.5
+        }"
+      ></i>
+    </small>
+</div>
