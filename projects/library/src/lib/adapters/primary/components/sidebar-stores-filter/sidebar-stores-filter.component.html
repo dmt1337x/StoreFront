@@ -1,8 +1,13 @@
 <h3 class="mb-4 mt-10">Stores</h3>
+<form [formGroup]="searchStores">
+  <input type="text" formControlName="search" placeholder="Search" class="form-control" />
+</form>
 <div *ngFor="let item of storesFilter$ | async" class="form-check mb-2">
-  <input [id]="item" class="form-check-input" type="checkbox" (click)="selectStore(item)" [checked]="item.isSelected" /><label
-    [for]="item"
-    class="form-check-label"
-    >{{ item.name }}</label
-  >
+  <input
+    [id]="item"
+    class="form-check-input"
+    type="checkbox"
+    (click)="selectStore(item)"
+    [checked]="item.isSelected"
+  /><label [for]="item" class="form-check-label">{{ item.name }}</label>
 </div>

@@ -4,8 +4,14 @@ import {
   Inject,
   ViewEncapsulation,
 } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
-import { map, take, tap } from 'rxjs/operators';
+import { FormControl, FormGroup } from '@angular/forms';
+import {
+  BehaviorSubject,
+  Observable,
+  ReplaySubject,
+  combineLatest,
+} from 'rxjs';
+import { filter, map, take, tap } from 'rxjs/operators';
 import { StoreQuery } from '../../../../application/ports/primary/query/store.query';
 import {
   GET_ALL_STORES_QUERY_PORT,
@@ -27,9 +33,24 @@ export class SidebarStoresFilterComponent {
   private _storesFilterSubject: ReplaySubject<StoreQuery[]> = new ReplaySubject<
     StoreQuery[]
   >(1);
+  private _searchStoresSubject: BehaviorSubject<string> =
+    new BehaviorSubject<string>('');
+  readonly searchStores: FormGroup = new FormGroup({
+    search: new FormControl(),
+  });
 
-  public storesFilter$: Observable<StoreQuery[]> =
-    this._storesFilterSubject.asObservable();
+  storesFilter$: Observable<StoreQuery[]> = combineLatest([
+    this._storesFilterSubject.asObservable(),
+    this._searchStoresSubject.asObservable(),
+  ]).pipe(
+    map(([stores, search]) =>
+      search.length > 0
+        ? stores.filter((store) =>
+            store.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+          )
+        : stores
+    )
+  );
 
   constructor(
     @Inject(GET_ALL_STORES_QUERY_PORT)
@@ -37,13 +58,11 @@ export class SidebarStoresFilterComponent {
     @Inject(SET_FILTER_BY_STORES_COMMAND_PORT)
     private _setFilterByStoresCommandPort: SetFilterByStoresCommandPort
   ) {
-    this._getAllStoresQueryPort
-      .getAllStores()
-      .pipe(
-        take(1),
-        tap((stores) => this._storesFilterSubject.next(stores))
-      )
-      .subscribe();
+    this.initStores();
+    
+    this.searchStores.valueChanges.pipe().subscribe((searchStores) => {
+      this._searchStoresSubject.next(searchStores.search);
+    });
   }
 
   selectStore(selectedStore: StoreQuery): void {
@@ -60,18 +79,28 @@ export class SidebarStoresFilterComponent {
         tap((newSelectedStores) =>
           this._storesFilterSubject.next(newSelectedStores)
         ),
-        tap((stores) => this.saveByStoreFilters(stores)
+        tap((stores) => this.saveByStoreFilters(stores))
+      )
+      .subscribe();
+  }
 
+  private saveByStoreFilters(stores: StoreQuery[]) {
+    this._setFilterByStoresCommandPort
+      .setFilterByStores(
+        new FilterByStoresCommand(
+          stores.map((store) => (store.isSelected ? store.id : ''))
         )
       )
       .subscribe();
   }
-  
-  private saveByStoreFilters(stores:StoreQuery[]){
-    this._setFilterByStoresCommandPort.setFilterByStores(
-      new FilterByStoresCommand(
-        stores.map((store) => (store.isSelected ? store.id : ""))
+
+  private initStores() {
+    this._getAllStoresQueryPort
+      .getAllStores()
+      .pipe(
+        take(1),
+        tap((stores) => this._storesFilterSubject.next(stores))
       )
-    ).subscribe()
+      .subscribe();
   }
 }

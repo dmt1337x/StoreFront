@@ -33,6 +33,5 @@ export class StoreDetailsComponent {
     private _getStoreDetailsQueryPort: GetStoreDetailsQueryPort,
     private _activatedRoute: ActivatedRoute
   ) {}
-
-  onSearchFormSubmitted(searchForm: FormGroup): void {}
+  
 }
